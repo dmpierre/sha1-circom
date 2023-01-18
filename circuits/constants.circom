@@ -1,3 +1,5 @@
+pragma circom 2.0.3;
+
 template H(x) {
     signal output out[32];
     var c[5] = [
