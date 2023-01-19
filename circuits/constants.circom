@@ -11,7 +11,6 @@ template H(x) {
     ];
 
     for (var i=0; i<32; i++) {
-        // binary representation of hex value
         out[i] <== (c[x] >> i) & 1;
     }
 }
