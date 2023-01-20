@@ -1,6 +1,7 @@
 pragma circom 2.0.3;
 
 include "constants.circom";
+include "sha1compression.circom";
 
 template Sha1(nBits) {
     signal input in[nBits];
