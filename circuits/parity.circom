@@ -1,6 +1,6 @@
 include "../node_modules/circomlib/circuits/sha256/xor3.circom";
 
-template Parity(n) {
+template Parity_t(n) {
      signal input a[n];
      signal input b[n];
      signal input c[n];
