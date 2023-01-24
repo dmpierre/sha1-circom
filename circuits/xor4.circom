@@ -18,7 +18,7 @@ template Xor4(n) {
 
     xor4:
     a ^ b ^ c ^ d
-    out_xor4 = out_xor3 - 2*d*out_xor4 + d
+    out_xor4 = out_xor3 - 2*d*out_xor3 + d
     */
 
     for (var k=0; k<n; k++) {
