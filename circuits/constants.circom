@@ -15,7 +15,7 @@ template H(x) {
     }
 }
 
-template K_t(t) {
+template K(t) {
     signal output out[32];
     var k[4] = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca621d6];
 
