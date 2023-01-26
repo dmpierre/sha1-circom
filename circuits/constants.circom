@@ -1,6 +1,9 @@
 pragma circom 2.0.3;
 
+include "../node_modules/circomlib/circuits/bitify.circom";
+
 template H(x) {
+
     signal output out[32];
     var c[5] = [
         0x67452301,
@@ -10,35 +13,41 @@ template H(x) {
         0xc3d2e1f0
     ];
 
-    for (var i=0; i<32; i++) {
-        out[i] <== (c[x] >> i) & 1;
+    component bitify = Num2Bits(32);
+    bitify.in <== c[x];
+
+    for (var k=0; k<32; k++) {
+        out[k] <== bitify.out[31-k];
     }
+
 }
 
 template K(t) {
     signal output out[32];
-    var k[4] = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca621d6];
+    var k[4] = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6];
+
+    component bitify = Num2Bits(32);
 
     var i;
-    if (t <= 19) {
-        for (i = 0; i<32; i++) {
-            out[i] <== (k[0] >> i) & 1;
-        }
-    } else {
-        if (t <= 39) {
-            for (i =0; i < 32; i++ ){
-                out[i] <== (k[1] >> i) & 1;
-            }
-        } else {
-            if (t <= 59) {
-                for (i =0; i < 32; i++ ){
-                    out[i] <== (k[2] >> i) & 1;
-                }
-            } else {
-                    for (i =0; i < 32; i++ ){
-                        out[i] <== (k[3] >> i) & 1;
-                    }
-            }
-        }
+
+    if (0 <= t && t <= 19) {
+        bitify.in <== k[0];
     }
+
+    if (20 <= t && t <= 39) {
+        bitify.in <== k[1];
+    }     
+
+    if (40 <= t && t <= 59) {
+        bitify.in <== k[2];
+    } 
+            
+    if (60 <= t && t <= 79) {
+        bitify.in <== k[3];
+    }
+
+    for (var k=0; k<32; k++) {
+        out[k] <== bitify.out[31-k];
+    }
+
 }

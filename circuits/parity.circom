@@ -1,3 +1,5 @@
+pragma circom 2.0.3;
+
 include "../node_modules/circomlib/circuits/sha256/xor3.circom";
 
 template Parity_t(n) {
@@ -6,7 +8,7 @@ template Parity_t(n) {
      signal input c[n];
      signal output out[n];
 
-     signal xor3 = Xor3(32);
+     component xor3 = Xor3(32);
      var k;
 
      for (k=0; k<32; k++) {
