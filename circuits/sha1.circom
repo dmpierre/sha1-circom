@@ -12,7 +12,7 @@ template Sha1(nBits) {
     var nBlocks;
     var bitsLastBlock;
 
-    nBlocks = ((nBits + 64) \ 512) + 1;
+    nBlocks = ((nBits + 64) \ 512) + 1;    
 
     signal paddedIn[nBlocks * 512];
 
