@@ -2,6 +2,7 @@ pragma circom 2.0.3;
 
 include "./rotate.circom";
 include "../node_modules/circomlib/circuits/binsum.circom";
+include "../node_modules/circomlib/circuits/comparators.circom";
 include "./f.circom";
 include "./constants.circom";
 
@@ -46,11 +47,17 @@ template T(t) {
      // perform sum modulo 32
      signal sum_modulo;
      signal quotient;
+     component less_than = LessThan(33);
 
      sum_modulo <-- sum.out % 2**32;
      quotient <-- sum.out \ 2**32;
-     sum.out === quotient*2**32 + sum_modulo;
 
+     less_than.in[0] <== sum_modulo;
+     less_than.in[1] <== 2**32;
+
+     sum.out === quotient*2**32 + sum_modulo;
+     1 === less_than.out;
+     
      // reconvert to bit array
      component sum_binary_modulo = Num2Bits(32);
      sum_binary_modulo.in <== sum_modulo; 
