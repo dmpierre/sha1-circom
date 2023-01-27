@@ -7,16 +7,18 @@
     "snarkjs": "^0.5.0"
   },
   "scripts": {
-    "test": "yarn tsc --outDir testBuild && yarn mocha --timeout 10000 --recursive 'testBuild'"
+    "test": "yarn tsc --outDir testBuild && yarn mocha --config=.mocharc.json && yarn ts-node ./test/report/report.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
+    "badge-maker": "^3.3.1",
     "chai": "^4.3.7",
     "circom_tester": "0.0.13",
     "circomlib": "^2.0.5",
     "mocha": "^10.2.0",
+    "mochawesome": "^7.1.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
   }
