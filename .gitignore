@@ -1,3 +1,5 @@
 node_modules
 main_js
 testBuild
+mochawesome-report
+test/report/json

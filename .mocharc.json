@@ -1,0 +1,14 @@
+{
+  "diff": true,
+  "extension": ["js"],
+  "package": "./package.json",
+  "reporter": "mochawesome",
+  "timeout": "10000",
+  "recursive": true,
+  "spec": "testBuild",
+  "reporter-option": [
+     "reportDir=test/report/json",
+     "html=false",
+     "reportFilename=testReport.json"
+   ]
+}
