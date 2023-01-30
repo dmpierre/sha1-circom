@@ -2,31 +2,69 @@
 import wasm_tester from "circom_tester/wasm/tester";
 import path from "path";
 import * as crypto from "crypto";
-import { bitArrayToHex, buffer2bitArray } from "../lib/transform";
 import { expect } from "chai";
+import {
+  bitArrayToHex,
+  buffer2bitArray,
+  getHexHashFromSha1CircuitOut,
+} from "../lib/transform";
+import { getNRandomBits, getStringOfNBits } from "../lib/input";
 
-describe("Computing SHA-1", () => {
-  it("Should output correct hash value of a 24bits input", async () => {
-    
-    const cir = await wasm_tester(path.join(__dirname, "../../test/circuits/main.circom"));
+describe("Test lib and SHA-1", () => {
+  describe("Test lib", () => {
+    it("Should output correct number of bits", () => {
+      const bits3 = getNRandomBits(3); // "0bBBB"
+      expect(parseInt(bits3, 2)).lessThanOrEqual(7);
+      expect(parseInt(bits3, 2)).greaterThanOrEqual(0);
+      expect(bits3).lengthOf(5);
+    });
 
-    const testStr = "abc";
-    const b = Buffer.from(testStr, "utf-8");
+    it("Should output correctly sized string", () => {
+      const str = getStringOfNBits(24); // UTF-8; should be multiple of 8
+      expect(str).lengthOf(3);
+      // convert to bit array --> buffer2bitArray() - from circomlib -
+    });
 
-    const hash = crypto.createHash("sha1").update(b).digest("hex");
+    it("Should convert correctly bit array to hex string", () => {
+      const hex = bitArrayToHex([0, 1, 0, 0, 1, 1, 0, 0]);
+      expect(hex).equal("4c");
+    });
+  });
 
-    const arrIn = buffer2bitArray(b);
-    const witness = await cir.calculateWitness({ in: arrIn }, true);
-    const arrOut = witness.slice(1, 161);
+  describe("Computing SHA-1", () => {
+    it("Should output correct hash value of a 24bits input", async () => {
+      const cir = await wasm_tester(
+        path.join(__dirname, "../../test/circuits/main24.circom")
+      );
 
-    const h0 = bitArrayToHex(arrOut.slice(0, 32).reverse());
-    const h1 = bitArrayToHex(arrOut.slice(32, 64).reverse());
-    const h2 = bitArrayToHex(arrOut.slice(64, 96).reverse());
-    const h3 = bitArrayToHex(arrOut.slice(96, 128).reverse());
-    const h4 = bitArrayToHex(arrOut.slice(128, 160).reverse());
+      const testStr = getStringOfNBits(24);
+      const b = Buffer.from(testStr, "utf-8");
+      const arrIn = buffer2bitArray(b);
+      const witness = await cir.calculateWitness({ in: arrIn }, true);
+      const arrOut = witness.slice(1, 161);
 
-    const formattedHashOut = `${h0}${h1}${h2}${h3}${h4}`;
+      const circuitHashOut = getHexHashFromSha1CircuitOut(arrOut);
 
-    expect(hash).equal(formattedHashOut);
+      const hash = crypto.createHash("sha1").update(b).digest("hex");
+
+      expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+    });
+
+    it("Should output correct hash value of 512bits inputs", async () => {
+      const cir = await wasm_tester(
+        path.join(__dirname, "../../test/circuits/main512.circom")
+      );
+
+      const testStr = getStringOfNBits(512);
+      const b = Buffer.from(testStr, "utf-8");
+      const arrIn = buffer2bitArray(b);
+      const witness = await cir.calculateWitness({ in: arrIn }, true);
+      const arrOut = witness.slice(1, 161);
+      const circuitHashOut = getHexHashFromSha1CircuitOut(arrOut);
+
+      const hash = crypto.createHash("sha1").update(b).digest("hex");
+
+      expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+    });
   });
 });

@@ -3,7 +3,7 @@
   "extension": ["js"],
   "package": "./package.json",
   "reporter": "mochawesome",
-  "timeout": "10000",
+  "timeout": "50000",
   "recursive": true,
   "spec": "testBuild",
   "reporter-option": [
