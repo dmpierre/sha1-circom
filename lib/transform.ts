@@ -9,8 +9,9 @@ export const buffer2bitArray = (b: Buffer) => {
   return res;
 };
 
-export const bitArrayToHex = (arr: []) => {
-  return parseInt(arr.join(""), 2).toString(16);
+export const bitArrayToHex = (arr: number[] | bigint[]) => {
+  const result = parseInt(arr.join(""), 2).toString(16);
+  return result
 };
 
 
