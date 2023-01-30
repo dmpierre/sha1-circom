@@ -10,6 +10,10 @@ This repo provides a working SHA1 implementation in [circom](https://docs.circom
 
 Work done under a Privacy and Scaling Exploration ([PSE](https://appliedzkp.org/)) grant.
 
+### Usage
+
+See `test` folder for example usage.
+
 ### Resources
 
 - [circomlib](https://github.com/iden3/circomlib)
