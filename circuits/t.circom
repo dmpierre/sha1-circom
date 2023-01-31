@@ -50,7 +50,7 @@ template T(t) {
      component less_than = LessThan(33);
 
      sum_modulo <-- sum.out % 2**32;
-     quotient <-- sum.out \ 2**32;
+     quotient <== sum.out \ 2**32;
 
      less_than.in[0] <== sum_modulo;
      less_than.in[1] <== 2**32;

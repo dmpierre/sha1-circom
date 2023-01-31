@@ -1,5 +1,5 @@
 //@ts-ignore
-import wasm_tester from "circom_tester/wasm/tester";
+import { wasm } from "circom_tester";
 import path from "path";
 import * as crypto from "crypto";
 import { expect } from "chai";
@@ -33,25 +33,19 @@ describe("Test lib and SHA-1", () => {
 
   describe("Computing SHA-1", () => {
     it("Should output correct hash value of a 24bits input", async () => {
-      const cir = await wasm_tester(
-        path.join(__dirname, "../../test/circuits/main24.circom")
-      );
-
+      const cir = await wasm(path.join(__dirname, "../../test/circuits/main24.circom"));
       const testStr = getStringOfNBits(24);
       const b = Buffer.from(testStr, "utf-8");
       const arrIn = buffer2bitArray(b);
       const witness = await cir.calculateWitness({ in: arrIn }, true);
       const arrOut = witness.slice(1, 161);
-
       const circuitHashOut = getHexHashFromSha1CircuitOut(arrOut);
-
       const hash = crypto.createHash("sha1").update(b).digest("hex");
-
       expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
     });
 
     it("Should output correct hash value of 512bits inputs", async () => {
-      const cir = await wasm_tester(
+      const cir = await wasm(
         path.join(__dirname, "../../test/circuits/main512.circom")
       );
 
