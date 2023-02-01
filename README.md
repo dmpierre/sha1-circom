@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/circom-2.0.3-lightgrey) ![](./test/report/badges/testReport.svg)
+![](https://img.shields.io/badge/circom-2.1.3-lightgrey) ![](./test/report/badges/testReport.svg)
 
 :warning: This is a WIP, with incomplete testing and unaudited code. Avoid production usage.
 
