@@ -4,10 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "circom_tester": "^0.0.19",
     "snarkjs": "^0.5.0"
   },
   "scripts": {
-    "test": "yarn tsc --outDir testBuild && yarn mocha --config=.mocharc.json && yarn ts-node ./test/report/report.ts"
+    "test": "yarn tsc --outDir testBuild && yarn mocha --exit --config=.mocharc.json && yarn ts-node ./test/report/report.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
@@ -15,7 +16,6 @@
     "@types/node": "^18.11.18",
     "badge-maker": "^3.3.1",
     "chai": "^4.3.7",
-    "circom_tester": "0.0.13",
     "circomlib": "^2.0.5",
     "mocha": "^10.2.0",
     "mochawesome": "^7.1.3",

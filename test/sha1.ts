@@ -1,14 +1,17 @@
 //@ts-ignore
-import wasm_tester from "circom_tester/wasm/tester";
+import { wasm } from "circom_tester";
 import path from "path";
 import * as crypto from "crypto";
 import { expect } from "chai";
+//@ts-ignore
+import * as snarkjs from "snarkjs";
 import {
   bitArrayToHex,
   buffer2bitArray,
   getHexHashFromSha1CircuitOut,
 } from "../lib/transform";
 import { getNRandomBits, getStringOfNBits } from "../lib/input";
+import fs from "fs";
 
 describe("Test lib and SHA-1", () => {
   describe("Test lib", () => {
@@ -33,7 +36,7 @@ describe("Test lib and SHA-1", () => {
 
   describe("Computing SHA-1", () => {
     it("Should output correct hash value of a 24bits input", async () => {
-      const cir = await wasm_tester(
+      const cir = await wasm(
         path.join(__dirname, "../../test/circuits/main24.circom")
       );
 
@@ -41,8 +44,9 @@ describe("Test lib and SHA-1", () => {
       const b = Buffer.from(testStr, "utf-8");
       const arrIn = buffer2bitArray(b);
       const witness = await cir.calculateWitness({ in: arrIn }, true);
-      const arrOut = witness.slice(1, 161);
+      await cir.checkConstraints(witness);
 
+      const arrOut = witness.slice(1, 161);
       const circuitHashOut = getHexHashFromSha1CircuitOut(arrOut);
 
       const hash = crypto.createHash("sha1").update(b).digest("hex");
@@ -51,7 +55,7 @@ describe("Test lib and SHA-1", () => {
     });
 
     it("Should output correct hash value of 512bits inputs", async () => {
-      const cir = await wasm_tester(
+      const cir = await wasm(
         path.join(__dirname, "../../test/circuits/main512.circom")
       );
 
@@ -59,12 +63,39 @@ describe("Test lib and SHA-1", () => {
       const b = Buffer.from(testStr, "utf-8");
       const arrIn = buffer2bitArray(b);
       const witness = await cir.calculateWitness({ in: arrIn }, true);
+      await cir.checkConstraints(witness);
+
       const arrOut = witness.slice(1, 161);
       const circuitHashOut = getHexHashFromSha1CircuitOut(arrOut);
 
       const hash = crypto.createHash("sha1").update(b).digest("hex");
 
       expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+    });
+  });
+
+  describe("Proving SHA1", () => {
+    it("Should compute and verify a valid proof", async () => {
+      const arrIn = {
+        in: [
+          1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+          1,
+        ],
+      };
+      const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+        arrIn,
+        path.join(__dirname, "../../test/circuits/wasm/main24.wasm"),
+        path.join(__dirname, "../../test/circuits/key/main24_final.zkey")
+      );
+      const vKey = JSON.parse(
+        fs
+          .readFileSync(
+            path.join(__dirname, "../../test/circuits/key/verification_key.json")
+          )
+          .toString()
+      );
+      const res = await snarkjs.groth16.verify(vKey, publicSignals, proof);
+      expect(res).equal(true);
     });
   });
 });
