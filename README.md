@@ -12,6 +12,10 @@ Work done under a Privacy and Scaling Exploration ([PSE](https://appliedzkp.org/
 
 ### Usage
 
+Run `yarn install`. 
+
+In order to run tests out-of-the-box, an example `.zkey` comes with this repo. It should not be used in prduction. 
+
 See `test` folder for example usage.
 
 ### Resources
