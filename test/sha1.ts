@@ -33,7 +33,9 @@ describe("Test lib and SHA-1", () => {
 
   describe("Computing SHA-1", () => {
     it("Should output correct hash value of a 24bits input", async () => {
-      const cir = await wasm(path.join(__dirname, "../../test/circuits/main24.circom"));
+      const cir = await wasm(
+        path.join(__dirname, "../../test/circuits/main24.circom")
+      );
       const testStr = getStringOfNBits(24);
       const b = Buffer.from(testStr, "utf-8");
       const arrIn = buffer2bitArray(b);

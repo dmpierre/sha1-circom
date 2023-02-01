@@ -11,9 +11,9 @@ template f_t(t) {
      signal input d[32];
      signal output out[32];
 
+     component maj = Maj_t(32);
      component parity = Parity_t(32);
      component ch = Ch_t(32);
-     component maj = Maj_t(32);
 
      var k;
      
