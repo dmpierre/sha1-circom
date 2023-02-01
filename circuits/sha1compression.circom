@@ -1,4 +1,4 @@
-pragma circom 2.0.3;
+pragma circom 2.1.3;
 
 include "./rotate.circom";  
 include "./xor4.circom";
@@ -26,9 +26,6 @@ template Sha1compression() {
     component xor4[64];
     for (i=0; i<64; i++) xor4[i] = Xor4(32);
 
-    component rotl_5[80];
-    for (i=0; i<=79; i++) rotl_5[i] = RotL(32, 5);
-
     component rotl_30[80];
     for (i=0; i<=79; i++) rotl_30[i] = RotL(32, 30);
 
@@ -44,28 +41,27 @@ template Sha1compression() {
     var k;
     var t;
 
-
-    for (t=0; t<=79; t++) {
-        // Prepare message schedule
-        if (t<=15) {
-            for (k=0; k<32; k++) {
-                w[t][k] <== inp[t*32+k];
-            }
-        } else {
-            for (k=0; k<32; k++) {
-                xor4[t-16].a[k] <== w[t-3][k];
-                xor4[t-16].b[k] <== w[t-8][k];
-                xor4[t-16].c[k] <== w[t-14][k];
-                xor4[t-16].d[k] <== w[t-16][k];
-            }
-            for (k=0; k<32; k++) {
-                rotl_1[t-16].in[k] <== xor4[t-16].out[k];
-            }
-            for (k=0; k<32; k++) {
-                w[t][k] <== rotl_1[t-16].out[k];
-            }
+    for (t=0; t<=15; t++) {
+        for (k=0; k<32; k++) {
+            w[t][k] <== inp[t*32+k];
         }
     }
+
+    for (t=16; t<=79; t++) {
+        for (k=0; k<32; k++) {
+            xor4[t-16].a[k] <== w[t-3][k];
+            xor4[t-16].b[k] <== w[t-8][k];
+            xor4[t-16].c[k] <== w[t-14][k];
+            xor4[t-16].d[k] <== w[t-16][k];
+        }
+        for (k=0; k<32; k++) {
+            rotl_1[t-16].in[k] <== xor4[t-16].out[k];
+        }
+        for (k=0; k<32; k++) {
+            w[t][k] <== rotl_1[t-16].out[k];
+        }
+    }
+
 
     // Initialize five working variables
     for (k=0; k<32; k++) {
