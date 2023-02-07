@@ -3,10 +3,10 @@ pragma circom 2.1.3;
 include "./constants/constants.circom";
 include "./functions/sha1compression.circom";
 
-template Sha1(nBits) {
+template Sha1General(maxNBits) {
     /*
-    * Compute SHA1 on a fixed number of input bits. 
-    * For arbitrary pre-image lengths, use the Sha1General template (sha1General.circom)
+    * Compute SHA1 on pre-images with arbitrary lengths. 
+    * For arbitrary fixed pre-image lengths, use the Sha1 template (sha1.circom)
     */
     signal input in[nBits];
     signal output out[160];

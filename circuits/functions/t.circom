@@ -1,10 +1,10 @@
 pragma circom 2.1.3;
 
 include "./rotate.circom";
-include "../node_modules/circomlib/circuits/binsum.circom";
-include "../node_modules/circomlib/circuits/comparators.circom";
+include "../../node_modules/circomlib/circuits/binsum.circom";
+include "../../node_modules/circomlib/circuits/comparators.circom";
 include "./f.circom";
-include "./constants.circom";
+include "../constants/constants.circom";
 
 template T(t) {
      signal input a[32];

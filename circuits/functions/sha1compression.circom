@@ -2,7 +2,7 @@ pragma circom 2.1.3;
 
 include "./rotate.circom";  
 include "./xor4.circom";
-include "./constants.circom";
+include "../constants/constants.circom";
 include "./t.circom";
 
 template Sha1compression() {

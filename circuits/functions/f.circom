@@ -1,8 +1,8 @@
 pragma circom 2.1.3;
 
 include "./parity.circom";
-include "../node_modules/circomlib/circuits/sha256/maj.circom";
-include "../node_modules/circomlib/circuits/sha256/ch.circom";
+include "../../node_modules/circomlib/circuits/sha256/maj.circom";
+include "../../node_modules/circomlib/circuits/sha256/ch.circom";
 
 template f_t(t) {
 
