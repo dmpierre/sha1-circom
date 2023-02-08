@@ -1,3 +1,4 @@
+import { exit } from "process";
 import { getSha1PaddedMessage } from "../lib/input";
 
 const main = () => {
@@ -5,6 +6,7 @@ const main = () => {
   const value = "abc";
   const encodedBytesArray = utf8Encoder.encode(value);
   const paddedMessage = getSha1PaddedMessage(encodedBytesArray);
+  return 0;
 };
 
-main();
+exit(main());

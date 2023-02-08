@@ -3,3 +3,4 @@ main_js
 testBuild
 mochawesome-report
 test/report/json
+data/

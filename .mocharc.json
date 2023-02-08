@@ -3,9 +3,9 @@
   "extension": ["js"],
   "package": "./package.json",
   "reporter": "mochawesome",
-  "timeout": "50000",
+  "timeout": "0",
   "recursive": true,
-  "spec": "testBuild",
+  "spec": "testBuild/test/",
   "reporter-option": [
      "reportDir=test/report/json",
      "html=false",
