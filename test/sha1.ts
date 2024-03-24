@@ -51,7 +51,7 @@ describe("Test lib and SHA-1", () => {
 
       const hash = crypto.createHash("sha1").update(b).digest("hex");
 
-      expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+      expect(hash).to.equal(circuitHashOut);
     });
 
     it("Should output correct hash value of 512bits inputs", async () => {
@@ -70,7 +70,7 @@ describe("Test lib and SHA-1", () => {
 
       const hash = crypto.createHash("sha1").update(b).digest("hex");
 
-      expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+      expect(hash).to.equal(circuitHashOut);
     });
   });
 
