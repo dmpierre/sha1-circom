@@ -37,7 +37,10 @@ describe("Test lib and SHA-1", () => {
   describe("Computing SHA-1", () => {
     it("Should output correct hash value of a 24bits input", async () => {
       const cir = await wasm(
-        path.join(__dirname, "../../test/circuits/main24.circom")
+        path.join(__dirname, "../../test/circuits/main24.circom"),
+        {
+          include: path.join(__dirname, "../../node_modules"),
+        }
       );
 
       const testStr = getStringOfNBits(24);
@@ -51,12 +54,15 @@ describe("Test lib and SHA-1", () => {
 
       const hash = crypto.createHash("sha1").update(b).digest("hex");
 
-      expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+      expect(hash).to.equal(circuitHashOut);
     });
 
     it("Should output correct hash value of 512bits inputs", async () => {
       const cir = await wasm(
-        path.join(__dirname, "../../test/circuits/main512.circom")
+        path.join(__dirname, "../../test/circuits/main512.circom"),
+        {
+          include: path.join(__dirname, "../../node_modules"),
+        }
       );
 
       const testStr = getStringOfNBits(512);
@@ -70,7 +76,7 @@ describe("Test lib and SHA-1", () => {
 
       const hash = crypto.createHash("sha1").update(b).digest("hex");
 
-      expect(parseInt(hash, 16)).equal(parseInt(circuitHashOut, 16));
+      expect(hash).to.equal(circuitHashOut);
     });
   });
 
